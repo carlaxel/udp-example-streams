@@ -27,16 +27,17 @@
       "y": 200
     },
     {
-      "partitionKey": null,
-      "schemaVersion": 2,
-      "id": "136fe100-4ccc-11ea-9014-2b24e4165af9",
-      "name": "Aggregate",
-      "type": "transforms/aggregate",
+      "id": "31a45de0-80ba-11eb-b363-0dcbd0a358e8",
+      "name": "Data Aggregator",
+      "type": "transforms/data_aggregate",
+      "schemaVersion": 1,
       "params": {
-        "key": "${payload.userId}",
-        "valueKey": "${payload.downloadedGame}",
-        "dateKey": "${payload.dateTime}",
-        "window": "month"
+        "flushType": "ALL_FILES",
+        "groupKeys": [
+          { "field": "userId", "operationType": "NONE" },
+          { "field": "dateTime", "operationType": "MONTH" }
+        ],
+        "operations": [{ "field": "downloadedGame", "type": "NUMERIC_SUM" }]
       },
       "x": 800,
       "y": 200
@@ -59,9 +60,9 @@
       "type": "transforms/map",
       "params": {
         "mappings": {
-          "User": "key",
-          "Month": "period",
-          "TotalDownload": "sum"
+          "Month": "month_dateTime",
+          "TotalDownload": "sum_downloadedGame",
+          "User": "userId"
         }
       },
       "x": 1000,
